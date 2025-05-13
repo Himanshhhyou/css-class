@@ -9,6 +9,26 @@
   <style>
     .sidebar {
       transition: transform 0.3s ease, opacity 0.3s ease;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      height: 100vh;
+    }
+    .file-list {
+      position: relative;
+    }
+    .file-list::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2rem;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.1));
+      pointer-events: none;
+      display: none;
+    }
+    .file-list.scrollable::after {
+      display: block;
     }
     .fade-in {
       animation: fadeIn 0.5s ease-in;
@@ -22,6 +42,7 @@
       padding-right: 1rem;
       color: #6b7280;
       text-align: right;
+      min-width: 2.5rem;
     }
     .code-container {
       display: flex;
@@ -32,68 +53,75 @@
     .settings-panel {
       transition: transform 0.3s ease;
     }
+    .file-item {
+      touch-action: manipulation;
+    }
+    .gradient-header {
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    }
   </style>
 </head>
-<body class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
+<body class="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans antialiased">
 
-  <header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
-    <h1 class="text-xl font-bold">Smart Code Viewer</h1>
-    <button id="menu-btn" class="hamburger text-2xl md:hidden" onclick="toggleSidebar()">☰</button>
+  <header class="gradient-header text-white p-3 flex justify-between items-center shadow-lg">
+    <h1 class="text-lg font-bold tracking-tight">Code Viewer</h1>
+    <button id="menu-btn" class="hamburger text-xl md:hidden" onclick="toggleSidebar()">☰</button>
   </header>
 
   <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50" onclick="closeSidebar()"></div>
 
   <main class="flex flex-1">
-    <aside id="sidebar" class="sidebar w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 flex flex-col gap-4 fixed md:static top-0 left-0 h-full z-50 -translate-x-full md:translate-x-0">
-      <input type="text" class="search-input p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search files..." oninput="filterFiles(this.value)" />
-      <div class="file-list flex flex-col gap-2 max-h-[70vh] overflow-y-auto">
-        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('01_inline.html')">01_inline.html</div>
-        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('02_internal.html')">02_internal.html</div>
-        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('03_external.html')">03_external.html</div>
-        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('03_style.css')">03_style.css</div>
-        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('04_specificity.html')">04_specificity.html</div>
-        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
+    <aside id="sidebar" class="sidebar w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 flex flex-col gap-3 fixed md:static top-0 left-0 z-50 -translate-x-full md:translate-x-0">
+      <input type="text" class="search-input p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400 text-sm" placeholder="Search files..." oninput="filterFiles(this.value)" />
+      <div class="file-list flex flex-col gap-1.5 overflow-y-auto max-h-[calc(100vh-12rem)] pr-2">
+        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors text-sm font-medium" onclick="loadCode('01_inline.html')">01_inline.html</div>
+        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors text-sm font-medium" onclick="loadCode('02_internal.html')">02_internal.html</div>
+        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors text-sm font-medium" onclick="loadCode('03_external.html')">03_external.html</div>
+        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors text-sm font-medium" onclick="load   Code('03_style.css')">03_style.css</div>
+        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors text-sm font-medium" onclick="loadCode('04_specificity.html')">04_specificity.html</div>
+        <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors text-sm font-medium" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
       </div>
       <div class="flex flex-col gap-2 mt-auto">
-        <button class="toggle-theme p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" onclick="toggleTheme()">Toggle Theme</button>
-        <button class="settings-btn p-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors" onclick="toggleSettings()">Settings</button>
+        <button class="toggle-theme p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium" onclick="toggleTheme()">Toggle Theme</button>
       </div>
     </aside>
 
-    <section class="content flex-1 p-6 overflow-y-auto fade-in">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-semibold">Code Preview</h2>
-        <div class="flex gap-2">
-          <button id="copy-btn" class="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors" onclick="copyCode()">Copy Code</button>
-          <button id="download-btn" class="p-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors" onclick="downloadCode()">Download</button>
+    <section class="content flex-1 p-4 md:p-5 overflow-y-auto fade-in">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-lg md:text-xl font-semibold tracking-tight">Code Preview</h2>
+        <div class="flex gap-1.5">
+          <button id="copy-btn" class="p-1.5 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-xs font-medium" onclick="copyCode()">Copy</button>
+          <button id="download-btn" class="p-1.5 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors text-xs font-medium" onclick="downloadCode()">Download</button>
         </div>
       </div>
-      <div class="code-container bg-gray-800 rounded-lg overflow-hidden">
-        <pre class="line-numbers p-4"></pre>
-        <pre><code id="code-block" class="language-none"></code></pre>
+      <div class="code-container bg-gray-800 rounded-lg overflow-hidden shadow-md">
+        <pre class="line-numbers p-3 text-xs"></pre>
+        <pre><code id="code-block" class="language-none text-xs"></code></pre>
       </div>
     </section>
 
-    <div id="settings-panel" class="settings-panel fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-800 p-4 border-l border-gray-200 dark:border-gray-700 transform translate-x-full transition-transform z-50">
-      <h3 class="text-lg font-semibold mb-4">Settings</h3>
-      <div class="flex flex-col gap-4">
-        <label class="flex items-center gap-2">
+    <div id="settings-panel" class="settings-panel fixed top-0 right-0 h-full w-60 bg-white dark:bg-gray-800 p-4 border-l border-gray-200 dark:border-gray-700 transform translate-x-full transition-transform z-50">
+      <h3 class="text-base font-semibold mb-3">Settings</h3>
+      <div class="flex flex-col gap-3">
+        <label class="flex items-center gap-1.5 text-xs">
           <input type="checkbox" id="line-numbers-toggle" checked onchange="toggleLineNumbers()">
           <span>Show Line Numbers</span>
         </label>
         <div>
-          <label class="block mb-1">Font Size</label>
-          <input type="range" id="font-size-slider" min="12" max="24" value="16" class="w-full" oninput="changeFontSize(this.value)">
+          <label class="block mb-0.5 text-xs">Font Size</label>
+          <input type="range" id="font-size-slider" min="12" max="24" value="14" class="w-full accent-blue-500" oninput="changeFontSize(this.value)">
         </div>
       </div>
-      <button class="mt-4 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" onclick="toggleSettings()">Close</button>
+      <button class="mt-3 p-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-xs" onclick="toggleSettings()">Close</button>
     </div>
+
+    <button id="fab" class="fixed bottom-4 right-4 p-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-colors md:hidden text-sm" onclick="toggleSettings()">⚙️</button>
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script>
     let currentFilename = '';
-    
+
     async function loadCode(filename) {
       try {
         const res = await fetch(filename);
@@ -106,7 +134,7 @@
         codeBlock.className = `language-${ext === "css" ? "css" : "html"}`;
         codeBlock.textContent = text;
         hljs.highlightElement(codeBlock);
-        
+
         updateLineNumbers(text);
         closeSidebar();
       } catch (err) {
@@ -141,6 +169,12 @@
       items.forEach(item => {
         item.style.display = item.textContent.toLowerCase().includes(query.toLowerCase()) ? "block" : "none";
       });
+      updateScrollIndicator();
+    }
+
+    function updateScrollIndicator() {
+      const fileList = document.querySelector(".file-list");
+      fileList.classList.toggle("scrollable", fileList.scrollHeight > fileList.clientHeight);
     }
 
     function toggleTheme() {
@@ -155,20 +189,24 @@
     }
 
     function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("show");
-      document.getElementById("sidebar").classList.toggle("-translate-x-full");
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("show");
+      sidebar.classList.toggle("-translate-x-full");
       document.getElementById("overlay").classList.toggle("hidden");
+      updateScrollIndicator();
     }
 
     function closeSidebar() {
-      document.getElementById("sidebar").classList.remove("show");
-      document.getElementById("sidebar").classList.add("-translate-x-full");
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.remove("show");
+      sidebar.classList.add("-translate-x-full");
       document.getElementById("overlay").classList.add("hidden");
     }
 
     function toggleSettings() {
       const panel = document.getElementById("settings-panel");
       panel.classList.toggle("translate-x-full");
+      document.getElementById("overlay").classList.toggle("hidden");
     }
 
     function copyCode() {
@@ -176,7 +214,7 @@
       navigator.clipboard.writeText(code).then(() => {
         const btn = document.getElementById("copy-btn");
         btn.textContent = "Copied!";
-        setTimeout(() => btn.textContent = "Copy Code", 2000);
+        setTimeout(() => btn.textContent = "Copy", 2000);
       });
     }
 
@@ -191,6 +229,8 @@
       a.click();
       URL.revokeObjectURL(url);
     }
+
+    window.addEventListener('load', updateScrollIndicator);
   </script>
 </body>
 </html>
