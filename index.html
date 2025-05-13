@@ -13,11 +13,19 @@
     .fade-in {
       animation: fadeIn 0.5s ease-in;
     }
-    .code-container {
+ .code-container {
   display: flex;
   width: 100%;
-  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-x: auto;  /* Enable horizontal scrolling */
 }
+
+pre {
+  margin: 0;
+  white-space: nowrap; /* Prevent code from wrapping */
+  word-wrap: normal;   /* Ensure no wrapping occurs */
+  flex-shrink: 0;      /* Prevent the pre from shrinking */
+}
+
 
 pre {
   margin: 0;
