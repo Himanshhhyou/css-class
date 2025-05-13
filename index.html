@@ -4,29 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Smart Code Viewer</title>
-  
-  <!-- Highlight.js Dark Theme (default) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" id="hljs-theme" />
-  
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
     .sidebar {
       transition: transform 0.3s ease, opacity 0.3s ease;
     }
     .fade-in {
       animation: fadeIn 0.5s ease-in;
-    }
-    .settings-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 100;
-      background-color: green;
     }
     .code-container {
       display: flex;
@@ -39,6 +26,10 @@
       word-wrap: break-word;
       flex-shrink: 0;
     }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
     .line-numbers {
       user-select: none;
       padding-right: 1rem;
@@ -48,20 +39,24 @@
     .settings-panel {
       transition: transform 0.3s ease;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    #hamburger-icon, .fa-cog {
+      transition: transform 0.2s ease;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .animate-spin {
+      animation: spin 1s linear infinite;
     }
   </style>
 </head>
-
 <body class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
 
 <header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
   <h1 class="text-xl font-bold">Smart Code Viewer</h1>
-
   <div class="flex items-center gap-4">
-    <!-- Hamburger -->
+    <!-- Hamburger Icon -->
     <button id="menu-btn" class="text-2xl md:hidden p-2 rounded hover:bg-blue-700 transition-colors" onclick="toggleSidebar()">
       <i id="hamburger-icon" class="fas fa-bars"></i>
     </button>
@@ -71,9 +66,9 @@
       <i id="theme-icon" class="fas fa-sun"></i>
     </button>
 
-    <!-- Settings -->
-    <button class="settings-btn p-2 text-white rounded-full hover:bg-gray-600 transition-colors" onclick="toggleSettings()">
-      <i class="fas fa-cogs"></i>
+    <!-- Settings Button -->
+    <button class="p-2 rounded-full bg-gray-700 text-white hover:bg-gray-600 transition-colors" onclick="toggleSettings()" title="Settings">
+      <i class="fas fa-cog text-lg"></i>
     </button>
   </div>
 </header>
@@ -81,17 +76,18 @@
 <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50" onclick="closeSidebar()"></div>
 
 <main class="flex flex-1">
-  <!-- Sidebar -->
   <aside id="sidebar" class="sidebar w-72 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 flex flex-col gap-4 fixed md:static top-0 left-0 h-full z-50 -translate-x-full md:translate-x-0">
-    <input type="text" class="p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search files..." oninput="filterFiles(this.value)" />
-    
+    <input type="text" class="search-input p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search files..." oninput="filterFiles(this.value)" />
     <div class="file-list flex flex-col gap-2 max-h-[70vh] overflow-y-auto">
       <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('01_inline.html')">01_inline.html</div>
-      <!-- Add more items as needed -->
+      <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('02_internal.html')">02_internal.html</div>
+      <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('03_external.html')">03_external.html</div>
+      <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('03_style.css')">03_style.css</div>
+      <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('04_specificity.html')">04_specificity.html</div>
+      <div class="file-item p-2 bg-gray-100 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-blue-500 hover:text-white transition-colors" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
     </div>
   </aside>
 
-  <!-- Content Area -->
   <section class="content flex-1 p-6 overflow-y-auto fade-in">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-2xl font-semibold">Code Preview</h2>
@@ -106,25 +102,15 @@
     </div>
   </section>
 
-  <!-- Settings Panel -->
   <div id="settings-panel" class="settings-panel fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-800 p-4 border-l border-gray-200 dark:border-gray-700 transform translate-x-full transition-transform z-50">
     <h3 class="text-lg font-semibold mb-4">Settings</h3>
-
-    <label class="flex items-center gap-2 mb-2">
-      <input type="checkbox" id="line-numbers-toggle" checked />
-      Show Line Numbers
-    </label>
-
     <label class="block mb-1">Font Size</label>
     <input type="range" id="font-size-slider" min="12" max="24" value="16" class="w-full" oninput="changeFontSize(this.value)">
-
     <button class="mt-4 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors" onclick="toggleSettings()">Close</button>
   </div>
 </main>
 
-<!-- Highlight.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-
 <script>
   let currentFilename = '';
 
@@ -140,7 +126,6 @@
       codeBlock.className = `language-${ext === "css" ? "css" : "html"}`;
       codeBlock.textContent = text;
       hljs.highlightElement(codeBlock);
-      
       updateLineNumbers(text);
       closeSidebar();
     } catch (err) {
@@ -150,60 +135,53 @@
     }
   }
 
-  function updateLineNumbers(text) {
-    const lineNumbers = document.querySelector(".line-numbers");
-    const toggle = document.getElementById("line-numbers-toggle");
-    if (!toggle || !toggle.checked) {
-      lineNumbers.textContent = "";
-      return;
-    }
-    const lines = text.split('\n').length;
-    lineNumbers.textContent = Array.from({ length: lines }, (_, i) => i + 1).join('\n');
-  }
-
-  function changeFontSize(size) {
-    document.getElementById("code-block").style.fontSize = `${size}px`;
-    document.querySelector(".line-numbers").style.fontSize = `${size}px`;
-  }
-
   function toggleTheme() {
     document.body.classList.toggle("dark");
     const themeLink = document.getElementById("hljs-theme");
-    const isDark = document.body.classList.contains("dark");
-
-    themeLink.href = isDark
+    themeLink.href = document.body.classList.contains("dark")
       ? "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css"
       : "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css";
 
     const icon = document.getElementById("theme-icon");
-    icon.classList.toggle("fa-sun", !isDark);
-    icon.classList.toggle("fa-moon", isDark);
-
-    hljs.highlightElement(document.getElementById("code-block"));
+    icon.classList.toggle("fa-sun", !document.body.classList.contains("dark"));
+    icon.classList.toggle("fa-moon", document.body.classList.contains("dark"));
   }
 
   function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("overlay");
     const icon = document.getElementById("hamburger-icon");
-
-    sidebar.classList.toggle("show");
-    sidebar.classList.toggle("-translate-x-full");
-    overlay.classList.toggle("hidden");
-
     const isOpen = sidebar.classList.contains("show");
-    icon.classList.toggle("fa-bars", !isOpen);
-    icon.classList.toggle("fa-times", isOpen);
+
+    if (isOpen) {
+      sidebar.classList.remove("show");
+      sidebar.classList.add("-translate-x-full");
+      overlay.classList.add("hidden");
+      icon.classList.remove("fa-times");
+      icon.classList.add("fa-bars");
+    } else {
+      sidebar.classList.add("show");
+      sidebar.classList.remove("-translate-x-full");
+      overlay.classList.remove("hidden");
+      icon.classList.remove("fa-bars");
+      icon.classList.add("fa-times");
+    }
   }
 
   function closeSidebar() {
-    document.getElementById("sidebar").classList.remove("show");
-    document.getElementById("sidebar").classList.add("-translate-x-full");
-    document.getElementById("overlay").classList.add("hidden");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const icon = document.getElementById("hamburger-icon");
+    sidebar.classList.remove("show");
+    sidebar.classList.add("-translate-x-full");
+    overlay.classList.add("hidden");
+    icon.classList.remove("fa-times");
+    icon.classList.add("fa-bars");
   }
 
   function toggleSettings() {
-    document.getElementById("settings-panel").classList.toggle("translate-x-full");
+    const panel = document.getElementById("settings-panel");
+    panel.classList.toggle("translate-x-full");
   }
 
   function copyCode() {
@@ -227,6 +205,17 @@
     URL.revokeObjectURL(url);
   }
 
+  function updateLineNumbers(text) {
+    const lineNumbers = document.querySelector(".line-numbers");
+    const lines = text.split('\n').length;
+    lineNumbers.textContent = Array.from({ length: lines }, (_, i) => i + 1).join('\n');
+  }
+
+  function changeFontSize(size) {
+    document.getElementById("code-block").style.fontSize = `${size}px`;
+    document.querySelector(".line-numbers").style.fontSize = `${size}px`;
+  }
+
   function filterFiles(query) {
     const items = document.querySelectorAll(".file-item");
     items.forEach(item => {
@@ -234,6 +223,5 @@
     });
   }
 </script>
-
 </body>
 </html>
