@@ -128,6 +128,55 @@
   overflow-y: auto;  /* vertical scroll if needed */
   padding-right: 5px; /* spacing for scrollbar */
 }
+header {
+  background: var(--accent);
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.hamburger {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: none; /* hidden by default */
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 60px; /* same as header height */
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 60px);
+    background-color: #fff;
+    z-index: 999;
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .sidebar.show {
+    transform: translateY(0);
+  }
+
+  .dark .sidebar {
+    background-color: #161b22;
+  }
+
+  main {
+    flex-direction: column;
+  }
+}
 
 
     @media (max-width: 768px) {
@@ -145,7 +194,11 @@
 </head>
 <body>
 
-<header>✨ Smart Code Viewer</header>
+<header>
+  <span>✨ Smart Code Viewer</span>
+  <button id="menu-btn" class="hamburger" onclick="toggleSidebar()">☰</button>
+</header>
+
 
 <main>
   <aside class="sidebar" id="sidebar">
@@ -195,6 +248,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
 <script>
   const codeBlock = document.getElementById("code-block");
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("show");
+}
 
   async function loadCode(filename) {
     try {
