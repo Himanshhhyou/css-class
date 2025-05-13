@@ -39,8 +39,19 @@
       background: var(--accent);
       color: white;
       padding: 1rem;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.2rem;
+    }
+
+    .hamburger {
       font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      display: none;
     }
 
     main {
@@ -77,6 +88,7 @@
       gap: 10px;
       max-height: 70vh;
       overflow-y: auto;
+      padding-right: 5px;
     }
 
     .file-item {
@@ -120,171 +132,111 @@
       color: white;
       border-radius: 5px;
     }
-    .file-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: 70vh; /* maximum 70% of viewport height */
-  overflow-y: auto;  /* vertical scroll if needed */
-  padding-right: 5px; /* spacing for scrollbar */
-}
-header {
-  background: var(--accent);
-  color: white;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.2rem;
-}
-
-.hamburger {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  display: none; /* hidden by default */
-}
-
-@media (max-width: 768px) {
-  .hamburger {
-    display: block;
-  }
-
-  .sidebar {
-    position: fixed;
-    top: 60px; /* same as header height */
-    left: 0;
-    width: 100%;
-    height: calc(100vh - 60px);
-    background-color: #fff;
-    z-index: 999;
-    transform: translateY(-100%);
-    transition: transform 0.3s ease;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .sidebar.show {
-    transform: translateY(0);
-  }
-
-  .dark .sidebar {
-    background-color: #161b22;
-  }
-
-  main {
-    flex-direction: column;
-  }
-}
-
 
     @media (max-width: 768px) {
-      main {
-        flex-direction: column;
+      .hamburger {
+        display: block;
       }
 
       .sidebar {
+        position: fixed;
+        top: 60px;
+        left: 0;
         width: 100%;
-        border-right: none;
+        height: calc(100vh - 60px);
+        background-color: #fff;
+        z-index: 999;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
         border-bottom: 1px solid #ccc;
+      }
+
+      .sidebar.show {
+        transform: translateY(0);
+      }
+
+      .dark .sidebar {
+        background-color: #161b22;
+      }
+
+      main {
+        flex-direction: column;
       }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <span>✨ Smart Code Viewer</span>
-  <button id="menu-btn" class="hamburger" onclick="toggleSidebar()">☰</button>
-</header>
+  <header>
+    <span>✨ Smart Code Viewer</span>
+    <button id="menu-btn" class="hamburger" onclick="toggleSidebar()">☰</button>
+  </header>
 
+  <main>
+    <aside class="sidebar" id="sidebar">
+      <input type="text" class="search-input" placeholder="Search files..." oninput="filterFiles(this.value)" />
+      <div class="file-list" id="file-list">
+        <div class="file-item" onclick="loadCode('01_inline.html')">01_inline.html</div>
+        <div class="file-item" onclick="loadCode('02_internal.html')">02_internal.html</div>
+        <div class="file-item" onclick="loadCode('03_external.html')">03_external.html</div>
+        <div class="file-item" onclick="loadCode('03_style.css')">03_style.css</div>
+        <div class="file-item" onclick="loadCode('04_specificity.html')">04_specificity.html</div>
+        <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
+        <!-- Add more files as needed -->
+      </div>
+      <div class="toggle-theme" onclick="toggleTheme()">🌗 Toggle Theme</div>
+    </aside>
 
-<main>
-  <aside class="sidebar" id="sidebar">
-    <input type="text" class="search-input" placeholder="Search files..." oninput="filterFiles(this.value)" />
-    <div class="file-list" id="file-list">
-      <div class="file-item" onclick="loadCode('01_inline.html')">01_inline.html</div>
-      <div class="file-item" onclick="loadCode('02_internal.html')">02_internal.html</div>
-      <div class="file-item" onclick="loadCode('03_external.html')">03_external.html</div>
-      <div class="file-item" onclick="loadCode('03_style.css')">03_style.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.html')">04_specificity.html</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-      <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-    </div>
-    <div class="toggle-theme" onclick="toggleTheme()">🌙 Toggle Theme</div>
-  </aside>
+    <section class="content">
+      <h2>📄 Code Preview</h2>
+      <pre><code id="code-block" class=""></code></pre>
+    </section>
+  </main>
 
-  <section class="content">
-    <h2>📄 Code Preview</h2>
-    <pre><code id="code-block" class=""></code></pre>
-  </section>
-</main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script>
+    const codeBlock = document.getElementById("code-block");
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
-<script>
-  const codeBlock = document.getElementById("code-block");
-function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("show");
-}
+    async function loadCode(filename) {
+      try {
+        const res = await fetch(filename);
+        if (!res.ok) throw new Error("File not found");
+        const text = await res.text();
 
-  async function loadCode(filename) {
-    try {
-      const res = await fetch(filename);
-      if (!res.ok) throw new Error("File not found");
+        const ext = filename.split('.').pop();
+        codeBlock.className = ext === "css" ? "css" : "html";
+        codeBlock.textContent = text;
+        hljs.highlightElement(codeBlock);
 
-      const text = await res.text();
-      const ext = filename.split('.').pop();
+        // Close sidebar on mobile after selection
+        document.getElementById("sidebar").classList.remove("show");
 
-      codeBlock.className = ext === "css" ? "css" : "html";
-      codeBlock.textContent = text;
-      hljs.highlightElement(codeBlock);
-    } catch (err) {
-      codeBlock.textContent = "⚠️ Error loading file: " + err.message;
+      } catch (err) {
+        codeBlock.textContent = "⚠️ Error loading file: " + err.message;
+      }
     }
-  }
 
-  function filterFiles(query) {
-    const items = document.querySelectorAll(".file-item");
-    items.forEach(item => {
-      item.style.display = item.textContent.toLowerCase().includes(query.toLowerCase()) ? "block" : "none";
-    });
-  }
+    function filterFiles(query) {
+      const items = document.querySelectorAll(".file-item");
+      items.forEach(item => {
+        item.style.display = item.textContent.toLowerCase().includes(query.toLowerCase()) ? "block" : "none";
+      });
+    }
 
-  function toggleTheme() {
-    document.body.classList.toggle("dark");
-    document.getElementById("sidebar").classList.toggle("dark");
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      document.getElementById("sidebar").classList.toggle("dark");
 
-    const themeLink = document.getElementById("hljs-theme");
-    themeLink.href = document.body.classList.contains("dark")
-      ? "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css"
-      : "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css";
-  }
-</script>
+      const themeLink = document.getElementById("hljs-theme");
+      themeLink.href = document.body.classList.contains("dark")
+        ? "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css"
+        : "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css";
+    }
+
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("show");
+    }
+  </script>
 
 </body>
 </html>
