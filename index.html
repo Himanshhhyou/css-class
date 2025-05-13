@@ -110,11 +110,14 @@
       </div>
     </div>
     <div class="code-container rounded-lg">
-
+      
       <pre class="line-numbers p-4"></pre>
       <pre><code id="code-block" class="language-none"></code></pre>
     </div>
-    <div id="image-preview" class="mt-6 flex justify-center"></div>
+    <br>
+    <!-- <h2 class="text-2xl font-semibold">Output</h2> -->
+    <iframe id="live-preview" class="w-full h-[500px] mt-6 rounded-lg shadow-lg bg-white"></iframe>
+
 
   </section>
 
@@ -130,65 +133,37 @@
 <script>
   let currentFilename = '';
 
-  // async function loadCode(filename) {
-  //   try {
-  //     const res = await fetch(filename);
-  //     if (!res.ok) throw new Error("File not found");
-  //     const text = await res.text();
-  //     currentFilename = filename;
-
-  //     const codeBlock = document.getElementById("code-block");
-  //     const ext = filename.split('.').pop();
-  //     codeBlock.className = `language-${ext === "css" ? "css" : "html"}`;
-  //     codeBlock.textContent = text;
-  //     hljs.highlightElement(codeBlock);
-  //     updateLineNumbers(text);
-  //     closeSidebar();
-  //   } catch (err) {
-  //     const codeBlock = document.getElementById("code-block");
-  //     codeBlock.textContent = "⚠️ Error loading file: " + err.message;
-  //     document.querySelector(".line-numbers").textContent = "";
-  //   }
-  // }
   async function loadCode(filename) {
-  try {
-    const res = await fetch(filename);
-    if (!res.ok) throw new Error("File not found");
-    const text = await res.text();
-    currentFilename = filename;
+    try {
+      const res = await fetch(filename);
+      if (!res.ok) throw new Error("File not found");
+      const text = await res.text();
+      currentFilename = filename;
 
-    const codeBlock = document.getElementById("code-block");
-    const ext = filename.split('.').pop();
-    codeBlock.className = `language-${ext === "css" ? "css" : "html"}`;
-    codeBlock.textContent = text;
-    hljs.highlightElement(codeBlock);
-    updateLineNumbers(text);
-    closeSidebar();
+      const codeBlock = document.getElementById("code-block");
+      const ext = filename.split('.').pop();
+      codeBlock.className = `language-${ext === "css" ? "css" : "html"}`;
+      codeBlock.textContent = text;
+      hljs.highlightElement(codeBlock);
+      updateLineNumbers(text);
+      closeSidebar();
 
-    // 🔽 IMAGE PREVIEW SECTION (inside loadCode!)
-    const imagePreview = document.getElementById("image-preview");
-    const imageFile = filename.replace(/\.[^/.]+$/, "") + ".png"; // Replace .html or .css with .png
-    const img = document.createElement("img");
-    img.src = imageFile;
-    img.alt = "Related visual preview";
-    img.className = "rounded-lg shadow-lg max-w-[600px] mt-4";
+    const livePreview = document.getElementById("live-preview");
+    if (ext === "html") {
+      livePreview.srcdoc = text;
+      livePreview.style.display = "block";
+    } else {
+      livePreview.style.display = "none";
+    }
 
-    fetch(img.src)
-      .then(response => {
-        if (!response.ok) throw new Error("Image not found");
-        imagePreview.innerHTML = "";
-        imagePreview.appendChild(img);
-      })
-      .catch(() => {
-        imagePreview.innerHTML = ""; // No image available
-      });
-
-  } catch (err) {
-    const codeBlock = document.getElementById("code-block");
-    codeBlock.textContent = "⚠️ Error loading file: " + err.message;
-    document.querySelector(".line-numbers").textContent = "";
+    } catch (err) {
+      const codeBlock = document.getElementById("code-block");
+      codeBlock.textContent = "⚠️ Error loading file: " + err.message;
+      document.querySelector(".line-numbers").textContent = "";
+      document.getElementById("live-preview").style.display = "none";
+    }
   }
-}
+  
 
 
   // function toggleTheme() {
