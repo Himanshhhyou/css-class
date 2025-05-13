@@ -65,10 +65,28 @@ pre {
 </head>
 <body class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
 
-  <header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
-    <h1 class="text-xl font-bold">Smart Code Viewer</h1>
-    <button id="menu-btn" class="hamburger text-2xl md:hidden" onclick="toggleSidebar()">☰</button>
-  </header>
+<header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
+  <h1 class="text-xl font-bold">Smart Code Viewer</h1>
+
+  <!-- Right Icons: Hamburger, Theme Toggle, Settings -->
+  <div class="flex items-center gap-4">
+    <!-- Hamburger (mobile only) -->
+    <button id="menu-btn" class="text-2xl md:hidden p-2 rounded hover:bg-blue-700 transition-colors" onclick="toggleSidebar()">
+      <i id="hamburger-icon" class="fas fa-bars"></i>
+    </button>
+
+    <!-- Theme toggle (sun/moon) -->
+    <button id="theme-toggle" class="p-2 rounded-full hover:bg-blue-500 transition-colors bg-blue-500 text-white" onclick="toggleTheme()">
+      <i id="theme-icon" class="fas fa-sun"></i>
+    </button>
+
+    <!-- Settings -->
+    <button class="settings-btn p-2 bg-gray-500 text-white rounded-full hover:bg-gray-600 transition-colors" onclick="toggleSettings()">
+      <i class="fas fa-cogs"></i>
+    </button>
+  </div>
+</header>
+
 
   <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50" onclick="closeSidebar()"></div>
   <button class="settings-btn p-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors" onclick="toggleSettings()">
@@ -148,6 +166,34 @@ pre {
         document.querySelector(".line-numbers").textContent = "";
       }
     }
+    function toggleTheme() {
+  document.body.classList.toggle("dark");
+
+  const themeLink = document.getElementById("hljs-theme");
+  const isDark = document.body.classList.contains("dark");
+  themeLink.href = isDark
+    ? "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css"
+    : "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css";
+
+  const icon = document.getElementById("theme-icon");
+  icon.classList.toggle("fa-sun", !isDark);
+  icon.classList.toggle("fa-moon", isDark);
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("overlay");
+  const icon = document.getElementById("hamburger-icon");
+
+  sidebar.classList.toggle("show");
+  sidebar.classList.toggle("-translate-x-full");
+  overlay.classList.toggle("hidden");
+
+  const isOpen = sidebar.classList.contains("show");
+  icon.classList.toggle("fa-bars", !isOpen);
+  icon.classList.toggle("fa-times", isOpen); // fa-times = ✖
+}
+
 
     function updateLineNumbers(text) {
       const lineNumbers = document.querySelector(".line-numbers");
