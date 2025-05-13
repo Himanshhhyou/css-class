@@ -43,6 +43,8 @@
       justify-content: space-between;
       align-items: center;
       font-size: 1.2rem;
+      position: relative;
+      z-index: 1002;
     }
 
     .hamburger {
@@ -68,6 +70,7 @@
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      z-index: 1001;
     }
 
     .sidebar.dark {
@@ -133,6 +136,21 @@
       border-radius: 5px;
     }
 
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 1000;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
     @media (max-width: 768px) {
       .hamburger {
         display: block;
@@ -140,23 +158,20 @@
 
       .sidebar {
         position: fixed;
-        top: 60px;
+        top: 0;
         left: 0;
-        width: 100%;
-        height: calc(100vh - 60px);
-        background-color: #fff;
-        z-index: 999;
-        transform: translateY(-100%);
+        height: 100%;
+        width: 240px;
+        transform: translateX(-100%);
         transition: transform 0.3s ease;
-        border-bottom: 1px solid #ccc;
       }
 
       .sidebar.show {
-        transform: translateY(0);
+        transform: translateX(0);
       }
 
       .dark .sidebar {
-        background-color: #161b22;
+        background: #161b22;
       }
 
       main {
@@ -172,6 +187,8 @@
     <button id="menu-btn" class="hamburger" onclick="toggleSidebar()">☰</button>
   </header>
 
+  <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
   <main>
     <aside class="sidebar" id="sidebar">
       <input type="text" class="search-input" placeholder="Search files..." oninput="filterFiles(this.value)" />
@@ -182,7 +199,7 @@
         <div class="file-item" onclick="loadCode('03_style.css')">03_style.css</div>
         <div class="file-item" onclick="loadCode('04_specificity.html')">04_specificity.html</div>
         <div class="file-item" onclick="loadCode('04_specificity.css')">04_specificity.css</div>
-        <!-- Add more files as needed -->
+        <!-- Add more files here -->
       </div>
       <div class="toggle-theme" onclick="toggleTheme()">🌗 Toggle Theme</div>
     </aside>
@@ -208,9 +225,7 @@
         codeBlock.textContent = text;
         hljs.highlightElement(codeBlock);
 
-        // Close sidebar on mobile after selection
-        document.getElementById("sidebar").classList.remove("show");
-
+        closeSidebar(); // close after load (on mobile)
       } catch (err) {
         codeBlock.textContent = "⚠️ Error loading file: " + err.message;
       }
@@ -235,6 +250,12 @@
 
     function toggleSidebar() {
       document.getElementById("sidebar").classList.toggle("show");
+      document.getElementById("overlay").classList.toggle("show");
+    }
+
+    function closeSidebar() {
+      document.getElementById("sidebar").classList.remove("show");
+      document.getElementById("overlay").classList.remove("show");
     }
   </script>
 
