@@ -160,19 +160,7 @@
     }
   }
 
-  // function toggleTheme() {
-  //   document.body.classList.toggle("dark");
-  //   const themeLink = document.getElementById("hljs-theme");
-  //   themeLink.href = document.body.classList.contains("dark")
-  //     ? "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css"
-  //     : "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css";
-
-  //   const icon = document.getElementById("theme-icon");
-  //   icon.classList.toggle("fa-sun", !document.body.classList.contains("dark"));
-  //   icon.classList.toggle("fa-moon", document.body.classList.contains("dark"));
-  // }
   function toggleTheme() {
-    console.log('Theme toggle clicked');
     document.body.classList.toggle("dark");
     const themeLink = document.getElementById("hljs-theme");
     themeLink.href = document.body.classList.contains("dark")
@@ -182,7 +170,8 @@
     const icon = document.getElementById("theme-icon");
     icon.classList.toggle("fa-sun", !document.body.classList.contains("dark"));
     icon.classList.toggle("fa-moon", document.body.classList.contains("dark"));
-}
+  }
+
 
 
   function toggleSidebar() {
