@@ -15,11 +15,36 @@
     .fade-in {
       animation: fadeIn 0.5s ease-in;
     }
-    .code-container {
-      display: flex;
-      width: 100%;
-      overflow-x: auto;
-    }
+  .code-container {
+  display: flex;
+  width: 100%;
+  background-color: #1e293b; /* Match bg-gray-800 */
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+.line-numbers,
+#code-block {
+  white-space: pre;
+  padding: 1rem;
+  min-width: 100px;
+}
+
+.line-numbers {
+  color: #94a3b8; /* Lighter gray for numbers */
+  text-align: right;
+  user-select: none;
+}
+
+#code-block {
+  flex: 1;
+  color: #e2e8f0; /* text color */
+}
+    .code-container pre {
+  flex: 1;
+}
+
+
     pre {
       margin: 0;
       white-space: pre-wrap;
