@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Child selector</title>
+    <style>
+        .main > p{
+            background-color: aqua;
+        }
+
+        /* style only para 4 */
+        .main div p{
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <p>This is paragrapgh 1</p>
+        <p>This is paragrapgh 2</p>
+        <p>This is paragrapgh 3</p>
+        <div>
+            <p>This is paragrapgh 4</p>
+        </div>
+        <p>This is paragrapgh 5</p>
+    </div>
+</body>
+</html>
