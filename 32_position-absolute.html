@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSS Position(absolute) Property</title>
+    <style>
+        .main{
+            background-color: red;
+            height: 200px;
+            width: 200px;
+            position: relative;
+          
+        }
+        .main div{
+            width: 50px;
+            height: 50px; 
+            display: inline-block;
+        }
+        .b1{
+            background-color: blue;
+            position: absolute;
+            right: 0px;
+        }
+        .b2{
+            background-color: rgb(255, 229, 210);
+            position: absolute;
+            bottom: 0px;
+        }
+        .b3{
+            background-color: green;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+
+        }
+        .b4{
+            background-color: yellow;
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="b1"></div>
+        <div class="b2"></div>
+        <div class="b3"></div>
+        <div class="b4"></div>
+    </div>
+</body>
+</html>
