@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Simple Login Form</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-card{
+            border-radius: 20px;
+            box-shadow: 0 0 10px #aaa;
+            width: 400px;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .form-card form{
+            width: 100%;
+        }
+        .form-card form input{
+            display: block;
+            width: 100%;
+            height: 30px;
+        }
+        .form-card form input{
+            margin-bottom: 50px;
+            margin-top: 5px;
+            border: 1px solid #aaa;
+        }
+        .form-card form input[type="submit"]{
+            width: 100px;
+            margin: auto;
+            background-color: green;
+            color: #fff;
+        }
+        .form-card form input[type="submit"]:hover{
+            background-color: transparent;
+            border: 2px solid green;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h1>Login Form</h1>
+        <form action="">
+            <label for="">Email ID</label>
+            <input type="text">
+            <label for="">Password</label>
+            <input type="password">
+            <input type="submit" value="LOGIN">
+        </form>
+    </div>
+</body>
+</html>

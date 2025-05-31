@@ -3,6 +3,7 @@
 <head>
     <title>InnoVexa</title>
     <style>
+      
         body{
             background-image: linear-gradient(rgba(0,0,0,0.8)), url(images/innovexa-bg.jpg);
             background-size: cover;
@@ -10,12 +11,17 @@
             background-repeat: no-repeat;
             height: 100vh;
             font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 200px;
         }
         header{
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin: 0px 50px 0px 50px;
+            width: 90%;
         }
         header h1{
             color: #fff;
@@ -40,6 +46,38 @@
             padding: 10px 20px;
             
         }
+        main{
+            width: 50%;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        main h1{
+            text-align: center;
+            font-size: 60px;
+            margin-bottom: -10px;
+        }
+        main h1 span{
+            color: aqua;
+        }
+        main p{
+            width: 600px;
+            text-align: center;
+            line-height: 25px;
+        }
+        main button{
+            width: 120px;
+            padding: 10px 5px;
+            border: 1px solid #fff;
+            background-color: transparent;
+            color: #fff;
+            font-weight: bold;
+        }
+        main button:hover{
+            background-color: cyan;
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -63,5 +101,12 @@
             </li>
         </ul>
     </header>
+
+
+    <main>
+        <h1>WE ARE <span>CREATIVE<span></h1>
+        <p>It captures the essence of pushing boundaries, rising above challenges, and leading in the tech industry. If you want something more tailored, let me know your company's vision or values, and I'll craft a motto that truly resonates.</p>
+        <button>CONTACT US</button>
+    </main>
 </body>
 </html>
